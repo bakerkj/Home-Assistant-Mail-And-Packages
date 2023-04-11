@@ -79,6 +79,13 @@ from .const import (
     SHIPPERS,
 )
 
+###########################################################
+# added by bakerkj 20230411 to work around old imap host
+import ssl
+ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+ctx.set_ciphers('DEFAULT')
+###########################################################
+
 _LOGGER = logging.getLogger(__name__)
 
 # Config Flow Helpers
@@ -111,7 +118,7 @@ async def _test_login(host: str, port: int, user: str, pwd: str) -> bool:
     """
     # Attempt to catch invalid mail server hosts
     try:
-        account = imaplib.IMAP4_SSL(host, port)
+        account = imaplib.IMAP4_SSL(host, port, ssl_context = ctx)
     except Exception as err:
         _LOGGER.error("Error connecting into IMAP Server: %s", str(err))
         return False
@@ -420,7 +427,7 @@ def login(
     """
     # Catch invalid mail server / host names
     try:
-        account = imaplib.IMAP4_SSL(host, port)
+        account = imaplib.IMAP4_SSL(host, port, ssl_context = ctx)
 
     except Exception as err:
         _LOGGER.error("Network error while connecting to server: %s", str(err))
