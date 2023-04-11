@@ -6,7 +6,8 @@
   "dependencies": [],
   "codeowners": [
     "@moralmunky",
-    "@firstof9"
+    "@firstof9",
+    "@bakerkj"
   ],
   "config_flow": true,
   "integration_type": "service",
